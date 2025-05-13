@@ -1,0 +1,64 @@
+.task {
+  background-color: #fff;
+  padding: 15px;
+  margin: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+
+  border-radius: 5px;
+
+  cursor: move;
+}
+
+.task p {
+  cursor: text;
+}
+
+.task_header {
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.task_header p,
+.task_content p {
+  margin: 0;
+}
+
+.task_footer {
+  border-top: 1px solid #d4d4d4;
+}
+
+.task_footer button {
+  margin-top: 10px;
+  padding: 0;
+
+  outline: none;
+  border: none;
+  background: none;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+}
+
+.task_footer button > svg {
+  transition: fill 0.2s ease;
+}
+
+.task_footer button > svg:hover {
+  fill: #f00000;
+}
+
+.task_header,
+.task_content,
+.task_footer {
+  width: 100%;
+  padding: 5px;
+}
