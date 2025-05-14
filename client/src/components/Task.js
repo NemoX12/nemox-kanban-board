@@ -14,7 +14,7 @@ const Task = ({ creation_date, content, status, completion_date, id }) => {
         <p>{content}</p>
       </div>
       <div className="task_footer">
-        <button>
+        <button className="task_footer_delete">
           <FaRegTrashAlt size={16} />
         </button>
       </div>

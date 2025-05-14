@@ -19,10 +19,10 @@ app.get("/", async (req, res) => {
 
 app.post("/", async (req, res) => {
   try {
-    const { content, status } = req.body;
+    const { content, status, completion_date } = req.body;
     await db.query(
-      "INSERT INTO tasks (content, status, creation_date) VALUES ($1, $2, CURRENT_TIMESTAMP)",
-      [content, status]
+      "INSERT INTO tasks (content, status, creation_date, completion_date) VALUES ($1, $2, CURRENT_TIMESTAMP, $3)",
+      [content, status, completion_date]
     );
     res.status(201).json("Created a task successfully!");
   } catch (error) {
