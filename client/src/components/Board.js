@@ -49,7 +49,9 @@ const Board = () => {
                     content={task.content}
                     status={task.status}
                     completion_date={task.completion_date}
+                    id={task.id}
                     key={task.id}
+                    fetchTasks={fetchTasks}
                   />
                 );
               })}
@@ -73,7 +75,9 @@ const Board = () => {
                     content={task.content}
                     status={task.status}
                     completion_date={task.completion_date}
+                    id={task.id}
                     key={task.id}
+                    fetchTasks={fetchTasks}
                   />
                 );
               })}
@@ -97,7 +101,9 @@ const Board = () => {
                     content={task.content}
                     status={task.status}
                     completion_date={task.completion_date}
+                    id={task.id}
                     key={task.id}
+                    fetchTasks={fetchTasks}
                   />
                 );
               })}

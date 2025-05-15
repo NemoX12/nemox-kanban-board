@@ -46,7 +46,7 @@ app.put("/:id", async (req, res) => {
 app.delete("/:id", async (req, res) => {
   try {
     await db.query("DELETE FROM tasks WHERE id = $1", [req.params.id]);
-    res.status(204).json("");
+    res.status(204).send();
   } catch (error) {
     console.error(error);
   }
