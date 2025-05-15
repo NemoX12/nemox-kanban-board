@@ -6,9 +6,9 @@ import { FaRegTimesCircle } from "react-icons/fa";
 const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
   const [taskContent, setTaskContent] = useState("");
   const [formError, setFormError] = useState("");
+
   const handleTaskCreate = async (e) => {
     e.preventDefault();
-
     if (taskContent.length === 0) {
       setFormError("Content can't be empty!");
       return;
@@ -16,15 +16,12 @@ const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
       setFormError("The content is too long!");
       return;
     }
-
     await axios.post("http://localhost:5542/", {
       content: taskContent,
       status: taskCreation,
       completion_date: taskCreation === "finished" ? new Date() : null,
     });
-
     setTaskCreation("");
-
     fetchTasks();
   };
 

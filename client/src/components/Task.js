@@ -10,19 +10,20 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
   const [editing, setEditing] = useState(false);
   const [taskContent, setTaskContent] = useState(content);
   const [formError, setFormError] = useState("");
-  const formatTimestamp = (timestamp) => {
-    return new Date(timestamp).toISOString().split("T")[0];
+
+  const formatTimestamp = (timestamp) => new Date(timestamp).toISOString().split("T")[0];
+
+  const handleDragStart = (e) => {
+    e.dataTransfer.setData("taskId", id);
   };
 
   const handleTaskDelete = async () => {
     await axios.delete(`http://localhost:5542/${id}`);
-
     fetchTasks();
   };
 
   const handleTaskCreate = async (e) => {
     e.preventDefault();
-
     if (taskContent.length === 0) {
       setFormError("Content can't be empty!");
       return;
@@ -30,19 +31,17 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
       setFormError("The content is too long!");
       return;
     }
-
     await axios.put(`http://localhost:5542/${id}`, {
       content: taskContent,
       status: status,
       completion_date: status === "finished" ? new Date() : null,
     });
-
     setEditing(false);
     fetchTasks();
   };
 
   return (
-    <div className="task">
+    <div className="task" draggable onDragStart={handleDragStart}>
       <div className="task_header">
         <p>{formatTimestamp(creation_date)}</p>
       </div>

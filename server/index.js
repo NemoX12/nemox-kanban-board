@@ -1,5 +1,4 @@
 const SERVER_PORT = 5542;
-
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -33,10 +32,31 @@ app.post("/", async (req, res) => {
 app.put("/:id", async (req, res) => {
   try {
     const { content, status, completion_date } = req.body;
-    await db.query(
-      "UPDATE tasks SET content = $1, status = $2, completion_date = $3 WHERE id = $4",
-      [content, status, completion_date, req.params.id]
-    );
+    const fields = [];
+    const values = [];
+    let idx = 1;
+
+    if (content !== undefined) {
+      fields.push(`content = $${idx++}`);
+      values.push(content);
+    }
+    if (status !== undefined) {
+      fields.push(`status = $${idx++}`);
+      values.push(status);
+    }
+    if (completion_date !== undefined) {
+      fields.push(`completion_date = $${idx++}`);
+      values.push(completion_date);
+    }
+
+    if (fields.length === 0) {
+      return res.status(400).json("No fields to update.");
+    }
+
+    values.push(req.params.id);
+    const query = `UPDATE tasks SET ${fields.join(", ")} WHERE id = $${idx}`;
+    await db.query(query, values);
+
     res.status(200).json("Updated a task successfully!");
   } catch (error) {
     console.error(error);

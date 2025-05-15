@@ -63,6 +63,11 @@
   overflow-y: auto;
 }
 
+.board_container_column_body.highlighted {
+  background: #cacaca;
+  transition: background 0.2s;
+}
+
 .board_container_column_body::-webkit-scrollbar {
   display: none;
 }
