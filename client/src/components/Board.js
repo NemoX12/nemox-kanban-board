@@ -42,6 +42,7 @@ const Board = () => {
             {taskCreation === "todo" && handleTaskForm()}
             {tasks
               .filter((task) => task.status === "todo")
+              .reverse()
               .map((task) => {
                 return (
                   <Task
@@ -68,6 +69,7 @@ const Board = () => {
             {taskCreation === "in_progress" && handleTaskForm()}
             {tasks
               .filter((task) => task.status === "in_progress")
+              .reverse()
               .map((task) => {
                 return (
                   <Task
@@ -94,6 +96,7 @@ const Board = () => {
             {taskCreation === "finished" && handleTaskForm()}
             {tasks
               .filter((task) => task.status === "finished")
+              .reverse()
               .map((task) => {
                 return (
                   <Task

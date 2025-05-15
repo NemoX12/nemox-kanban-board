@@ -88,6 +88,10 @@
   fill: #f00000;
 }
 
+.task_footer_edit {
+  margin-left: 10px;
+}
+
 .task_content_form_button > svg {
   transition: fill 0.2s ease;
 }
