@@ -19,8 +19,10 @@ const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
     await axios.post("http://localhost:5542/", {
       content: taskContent,
       status: taskCreation,
+      creation_date: new Date().toISOString(),
       completion_date: taskCreation === "finished" ? new Date() : null,
     });
+
     setTaskCreation("");
     fetchTasks();
   };

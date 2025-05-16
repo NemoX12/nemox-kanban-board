@@ -77,30 +77,28 @@ const Board = () => {
         onDragLeave={handleDragLeave}
         onDrop={(e) => handleDrop(e, status)}
       >
-        {tasks.filter((task) => task.status === status).length === 0 ? (
-          <div className="board_container_column_body_empty">
-            <h1>No items available</h1>
-            <p>Add an item to this status and track them across status</p>
-          </div>
-        ) : (
-          <>
-            {taskCreation === status && handleTaskForm()}
-            {tasks
-              .filter((task) => task.status === status)
-              .reverse()
-              .map((task) => (
-                <Task
-                  creation_date={task.creation_date}
-                  content={task.content}
-                  status={task.status}
-                  completion_date={task.completion_date}
-                  id={task.id}
-                  key={task.id}
-                  fetchTasks={fetchTasks}
-                />
-              ))}
-          </>
-        )}
+        {tasks.filter((task) => task.status === status).length === 0 &&
+          taskCreation !== status && (
+            <div className="board_container_column_body_empty">
+              <h1>No items available</h1>
+              <p>Add an item to this status and track them across status</p>
+            </div>
+          )}
+        {taskCreation === status && handleTaskForm()}
+        {tasks
+          .filter((task) => task.status === status)
+          .reverse()
+          .map((task) => (
+            <Task
+              creation_date={task.creation_date}
+              content={task.content}
+              status={task.status}
+              completion_date={task.completion_date}
+              id={task.id}
+              key={task.id}
+              fetchTasks={fetchTasks}
+            />
+          ))}
       </div>
     </div>
   );

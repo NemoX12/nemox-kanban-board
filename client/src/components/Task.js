@@ -5,27 +5,13 @@ import { FaRegTimesCircle } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import axios from "axios";
 import "../styles/Task.css";
+import formatTimestamp from "../utils/formatTimestamp";
+import formatFullDate from "../utils/formatFullDate";
 
 const Task = ({ creation_date, content, status, completion_date, id, fetchTasks }) => {
   const [editing, setEditing] = useState(false);
   const [taskContent, setTaskContent] = useState(content);
   const [formError, setFormError] = useState("");
-
-  const formatTimestamp = (timestamp) => {
-    return new Date(timestamp).toISOString().split("T")[0];
-  };
-
-  const formatFullDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-  };
 
   const handleDragStart = (e) => {
     e.dataTransfer.setData("taskId", id);
