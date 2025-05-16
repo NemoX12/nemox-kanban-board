@@ -14,12 +14,20 @@
   cursor: move;
 }
 
+.task:hover {
+  outline: 1px solid #10aab5;
+}
+
 .task p {
   cursor: text;
 }
 
 .task_header {
   border-bottom: 1px solid #d4d4d4;
+}
+
+.task_header p {
+  cursor: pointer;
 }
 
 .task_header p,
@@ -60,6 +68,7 @@
 
 .task_footer {
   border-top: 1px solid #d4d4d4;
+  position: relative;
 }
 
 .task_footer button,
@@ -98,6 +107,22 @@
 
 .task_content_form_button > svg:hover {
   fill: #008500;
+}
+
+.task_footer_completiondate {
+  position: absolute;
+  border: 1px solid #d1d1d1;
+  bottom: -10;
+  left: 50%;
+  transform: translate(-45%, 5px);
+  font-size: 12px;
+  padding: 2px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.task_footer_completiondate p {
+  margin: 0;
 }
 
 .task_header,

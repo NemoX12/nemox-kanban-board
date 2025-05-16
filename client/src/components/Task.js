@@ -11,7 +11,21 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
   const [taskContent, setTaskContent] = useState(content);
   const [formError, setFormError] = useState("");
 
-  const formatTimestamp = (timestamp) => new Date(timestamp).toISOString().split("T")[0];
+  const formatTimestamp = (timestamp) => {
+    return new Date(timestamp).toISOString().split("T")[0];
+  };
+
+  const formatFullDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
 
   const handleDragStart = (e) => {
     e.dataTransfer.setData("taskId", id);
@@ -43,7 +57,7 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
   return (
     <div className="task" draggable onDragStart={handleDragStart}>
       <div className="task_header">
-        <p>{formatTimestamp(creation_date)}</p>
+        <p title={formatFullDate(creation_date)}>{formatTimestamp(creation_date)}</p>
       </div>
       <div className="task_content">
         {!editing ? (
@@ -70,6 +84,13 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
         <button className="task_footer_edit" onClick={() => setEditing((prev) => !prev)}>
           {!editing ? <FaPen size={16} /> : <FaRegTimesCircle size={16} />}
         </button>
+        {completion_date && (
+          <div className="task_footer_completiondate">
+            <p title={`Completed on ${formatFullDate(completion_date)}`}>
+              {formatTimestamp(completion_date)}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

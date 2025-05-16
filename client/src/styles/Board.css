@@ -11,7 +11,7 @@
   width: 70%;
   height: 75%;
 
-  background-color: #eeeeee;
+  background-color: #e8ebf3;
 
   border-radius: 10px;
 
@@ -60,14 +60,39 @@
 
 .board_container_column_body {
   height: 550px;
+  border-radius: 8px;
   overflow-y: auto;
 }
 
 .board_container_column_body.highlighted {
-  background: #cacaca;
+  background: rgba(255, 255, 255, 0.7);
+  outline: 1px dashed #008500;
   transition: background 0.2s;
 }
 
 .board_container_column_body::-webkit-scrollbar {
   display: none;
+}
+
+.board_container_column_body_empty {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+}
+
+.board_container_column_body_empty h1,
+.board_container_column_body_empty p {
+  margin: 0;
+}
+
+.board_container_column_body_empty h1 {
+  font-size: 24px;
+}
+
+.board_container_column_body_empty p {
+  margin-top: 15px;
 }
