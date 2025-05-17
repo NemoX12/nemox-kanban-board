@@ -16,12 +16,16 @@ const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
       setFormError("The content is too long!");
       return;
     }
-    await axios.post("http://localhost:5542/", {
-      content: taskContent,
-      status: taskCreation,
-      creation_date: new Date().toISOString(),
-      completion_date: taskCreation === "finished" ? new Date() : null,
-    });
+    await axios.post(
+      "http://localhost:5542/board",
+      {
+        content: taskContent,
+        status: taskCreation,
+        creation_date: new Date().toISOString(),
+        completion_date: taskCreation === "finished" ? new Date() : null,
+      },
+      { withCredentials: true }
+    );
 
     setTaskCreation("");
     fetchTasks();

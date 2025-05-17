@@ -1,20 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { CiSquarePlus } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import "../styles/Board.css";
-import Task from "./Task";
-import TaskForm from "./TaskForm";
+import Task from "../components/Task";
+import TaskForm from "../components/TaskForm";
+import Sidebar from "../components/Sidebar";
 
 const Board = () => {
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+
   const [tasks, setTasks] = useState([]);
   const [taskCreation, setTaskCreation] = useState("");
   const [highlightedColumn, setHighlightedColumn] = useState("");
 
-  const fetchTasks = () => {
-    axios
-      .get("http://localhost:5542/")
-      .then((res) => res.data)
-      .then((data) => setTasks(data));
+  const fetchTasks = async () => {
+    try {
+      const res = await axios.get("http://localhost:5542/board", {
+        withCredentials: true,
+      });
+      setTasks(res.data);
+    } catch (err) {
+      if (err.response?.status === 401) {
+        await logout();
+        navigate("/login");
+      }
+    }
   };
 
   useEffect(() => fetchTasks, []);
@@ -54,10 +67,14 @@ const Board = () => {
       completion_date = null;
     }
 
-    await axios.put(`http://localhost:5542/${taskId}`, {
-      status: newStatus,
-      completion_date,
-    });
+    await axios.put(
+      `http://localhost:5542/board/${taskId}`,
+      {
+        status: newStatus,
+        completion_date,
+      },
+      { withCredentials: true }
+    );
     fetchTasks();
   };
 
@@ -72,6 +89,8 @@ const Board = () => {
       <div
         className={`board_container_column_body${
           highlightedColumn === status ? " highlighted" : ""
+        } ${
+          tasks.filter((task) => task.status === status).length === 0 ? "" : "scrollable"
         }`}
         onDragOver={(e) => allowDrop(e, status)}
         onDragLeave={handleDragLeave}
@@ -104,11 +123,16 @@ const Board = () => {
   );
 
   return (
-    <div className="board">
-      <div className="board_container">
-        {renderColumn("todo", "To Do")}
-        {renderColumn("in_progress", "In Progress")}
-        {renderColumn("finished", "Finished")}
+    <div style={{ display: "flex" }}>
+      <Sidebar />
+      <div style={{ marginLeft: 200, width: "100%" }}>
+        <div className="board">
+          <div className="board_container">
+            {renderColumn("todo", "To Do")}
+            {renderColumn("in_progress", "In Progress")}
+            {renderColumn("finished", "Finished")}
+          </div>
+        </div>
       </div>
     </div>
   );

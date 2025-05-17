@@ -61,7 +61,6 @@
 .board_container_column_body {
   height: 550px;
   border-radius: 8px;
-  overflow-y: auto;
 }
 
 .board_container_column_body.highlighted {
@@ -70,7 +69,11 @@
   transition: background 0.2s;
 }
 
-.board_container_column_body::-webkit-scrollbar {
+.board_container_column_body.scrollable {
+  overflow-y: auto;
+}
+
+.board_container_column_body.scrollable::-webkit-scrollbar {
   display: none;
 }
 

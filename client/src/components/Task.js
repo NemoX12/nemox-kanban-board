@@ -18,7 +18,7 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
   };
 
   const handleTaskDelete = async () => {
-    await axios.delete(`http://localhost:5542/${id}`);
+    await axios.delete(`http://localhost:5542/board/${id}`, { withCredentials: true });
     fetchTasks();
   };
 
@@ -31,11 +31,15 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
       setFormError("The content is too long!");
       return;
     }
-    await axios.put(`http://localhost:5542/${id}`, {
-      content: taskContent,
-      status: status,
-      completion_date: status === "finished" ? new Date() : null,
-    });
+    await axios.put(
+      `http://localhost:5542/board/${id}`,
+      {
+        content: taskContent,
+        status: status,
+        completion_date: status === "finished" ? new Date() : null,
+      },
+      { withCredentials: true }
+    );
     setEditing(false);
     fetchTasks();
   };
