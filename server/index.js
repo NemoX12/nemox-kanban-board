@@ -8,6 +8,8 @@ const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const { sendMail } = require("./email");
 
+const pendingSignups = {};
+
 const app = express();
 
 app.use(express.json());
@@ -225,6 +227,46 @@ app.post("/auth/reset-password", async (req, res) => {
     [hashed, user.id]
   );
   res.json({ message: "Password reset successful" });
+});
+
+app.post("/auth/request-signup", async (req, res) => {
+  const { username, password, firstName, lastName } = req.body;
+
+  const existing = await db.query("SELECT 1 FROM users WHERE username = $1", [username]);
+  if (existing.rows.length > 0) {
+    return res.status(409).json({ error: "User with this email already exists." });
+  }
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  pendingSignups[username] = {
+    firstName,
+    lastName,
+    password: await bcrypt.hash(password, 10),
+    code,
+    expiresAt: Date.now() + 15 * 60 * 1000,
+  };
+  await sendMail({
+    to: username,
+    subject: "Your Verification Code",
+    text: `Your verification code is: ${code}`,
+    html: `<p>Your verification code is: <b>${code}</b></p>`,
+  });
+  res.json({ message: "Verification code sent to your email." });
+});
+
+app.post("/auth/verify-signup", async (req, res) => {
+  const { username, code } = req.body;
+  const pending = pendingSignups[username];
+  if (!pending || pending.code !== code || Date.now() > pending.expiresAt) {
+    return res.status(400).json({ error: "Invalid or expired code." });
+  }
+  // Create user in DB
+  await db.query(
+    "INSERT INTO users (username, password, first_name, last_name, is_verified) VALUES ($1, $2, $3, $4, $5)",
+    [username, pending.password, pending.firstName, pending.lastName, true]
+  );
+  delete pendingSignups[username];
+  res.json({ message: "Account created and verified!" });
 });
 
 app.get("/protected", authMiddleware, (req, res) => {

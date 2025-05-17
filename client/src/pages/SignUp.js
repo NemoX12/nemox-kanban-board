@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import VerifyCode from "./VerifyCode";
 import "../styles/AuthForm.css";
 
 function isValidEmail(email) {
@@ -17,6 +18,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState(""); // "success" or "error"
+  const [showVerify, setShowVerify] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -34,19 +36,23 @@ const SignUp = () => {
       return;
     }
     try {
-      await axios.post("http://localhost:5542/auth/signup", {
+      await axios.post("http://localhost:5542/auth/request-signup", {
         username,
         password,
         firstName,
         lastName,
       });
-      setMsg("Sign up successful! You can now sign in.");
-      setMsgType("success");
+      setShowVerify(true); // Only if successful
     } catch (err) {
       setMsg(err.response?.data?.error || "Sign up failed");
       setMsgType("error");
+      setPassword(""); // Optional: clear password field on error
     }
   };
+
+  if (showVerify) {
+    return <VerifyCode email={username} />;
+  }
 
   return (
     <div className="auth-form-outer">
