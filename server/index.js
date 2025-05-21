@@ -7,6 +7,9 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const { sendMail } = require("./email");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const session = require("express-session");
 
 const pendingSignups = {};
 
@@ -20,6 +23,59 @@ app.use(
   })
 );
 app.use(cookieParser());
+
+app.use(
+  session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:5542/auth/google/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      let user = await db.query("SELECT * FROM users WHERE username = $1", [
+        profile.emails[0].value,
+      ]);
+      if (!user.rows.length) {
+        await db.query(
+          "INSERT INTO users (username, first_name, last_name, photo_url, is_verified) VALUES ($1, $2, $3, $4, $5)",
+          [
+            profile.emails[0].value,
+            profile.name.givenName,
+            profile.name.familyName,
+            profile.photos?.[0]?.value || null,
+            true,
+          ]
+        );
+        user = await db.query("SELECT * FROM users WHERE username = $1", [
+          profile.emails[0].value,
+        ]);
+      } else if (!user.rows[0].photo_url && profile.photos?.[0]?.value) {
+        // Optionally update photo_url if missing
+        await db.query("UPDATE users SET photo_url = $1 WHERE username = $2", [
+          profile.photos[0].value,
+          profile.emails[0].value,
+        ]);
+        user = await db.query("SELECT * FROM users WHERE username = $1", [
+          profile.emails[0].value,
+        ]);
+      }
+      return done(null, user.rows[0]);
+    }
+  )
+);
 
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
@@ -276,7 +332,7 @@ app.get("/protected", authMiddleware, (req, res) => {
 app.get("/auth/check", authMiddleware, async (req, res) => {
   try {
     const result = await db.query(
-      "SELECT first_name, last_name FROM users WHERE id = $1",
+      "SELECT first_name, last_name, photo_url FROM users WHERE id = $1",
       [req.user.userId]
     );
     const user = result.rows[0];
@@ -284,12 +340,34 @@ app.get("/auth/check", authMiddleware, async (req, res) => {
       authenticated: true,
       first_name: user?.first_name || "",
       last_name: user?.last_name || "",
+      photoUrl: user?.photo_url || "",
       user: req.user,
     });
   } catch (error) {
     res.status(500).json({ authenticated: false });
   }
 });
+
+app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "http://localhost:3000/login" }),
+  (req, res) => {
+    const token = jwt.sign(
+      { userId: req.user.id, username: req.user.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "30m" }
+    );
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 30 * 60 * 1000,
+      sameSite: "lax",
+    });
+    res.redirect("http://localhost:3000/board");
+  }
+);
 
 app.listen(SERVER_PORT, () => {
   console.log("✅ Server is running on port:", SERVER_PORT);

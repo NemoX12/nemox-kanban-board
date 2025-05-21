@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../styles/AuthForm.css";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
-  const [msgType, setMsgType] = useState(""); // "success" or "error"
+  const [msgType, setMsgType] = useState("");
   const [cooldown, setCooldown] = useState(0);
   const timerRef = useRef(null);
 
@@ -16,10 +19,22 @@ const ForgotPassword = () => {
     return () => clearTimeout(timerRef.current);
   }, [cooldown]);
 
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg("");
     setMsgType("");
+    if (!email.trim()) {
+      setMsg("Please enter your email.");
+      setMsgType("error");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setMsg("Please enter a valid email address.");
+      setMsgType("error");
+      return;
+    }
     if (cooldown > 0) return;
     try {
       await axios.post("http://localhost:5542/auth/forgot-password", { email });
@@ -53,6 +68,9 @@ const ForgotPassword = () => {
         >
           {msg}
         </div>
+        <button type="button" onClick={() => navigate("/login")}>
+          Turn back
+        </button>
       </form>
     </div>
   );

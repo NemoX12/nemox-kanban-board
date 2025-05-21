@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
+import { ReactComponent as GoogleIcon } from "../assets/google_icon.svg";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
@@ -8,12 +9,14 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
+  const [msgType, setMsgType] = useState("");
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg("");
+    setMsgType("");
     try {
       await axios.post(
         "http://localhost:5542/auth/signin",
@@ -21,7 +24,10 @@ const SignIn = () => {
         { withCredentials: true }
       );
       await login();
+      setMsgType("success");
+      setMsg("Sign in successful");
     } catch (err) {
+      setMsgType("error");
       setMsg(err.response?.data?.error || "Sign in failed");
     }
   };
@@ -42,7 +48,31 @@ const SignIn = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Sign In</button>
-        <div>{msg}</div>
+        <div
+          className={
+            "form-message " +
+            (msgType === "success"
+              ? "msg-success"
+              : msgType === "error"
+              ? "msg-error"
+              : "")
+          }
+        >
+          {msg}
+        </div>
+        <button
+          className="gsi-material-button google-auth-btn"
+          onClick={() => (window.location.href = "http://localhost:5542/auth/google")}
+        >
+          <div className="gsi-material-button-state"></div>
+          <div className="gsi-material-button-content-wrapper">
+            <div className="gsi-material-button-icon">
+              <GoogleIcon />
+            </div>
+            <span className="gsi-material-button-contents">Continue with Google</span>
+            <span style={{ display: "none" }}>Continue with Google</span>
+          </div>
+        </button>
         <p>
           <button
             type="button"
@@ -60,7 +90,7 @@ const SignIn = () => {
           </button>
         </p>
         <p>
-          Don't have an account?{" "}
+          Don't have an account?
           <button type="button" onClick={() => navigate("/signup")}>
             Sign Up
           </button>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import VerifyCode from "./VerifyCode";
+import { ReactComponent as GoogleIcon } from "../assets/google_icon.svg";
 import "../styles/AuthForm.css";
 
 function isValidEmail(email) {
@@ -17,7 +18,7 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
-  const [msgType, setMsgType] = useState(""); // "success" or "error"
+  const [msgType, setMsgType] = useState("");
   const [showVerify, setShowVerify] = useState(false);
   const navigate = useNavigate();
 
@@ -42,11 +43,11 @@ const SignUp = () => {
         firstName,
         lastName,
       });
-      setShowVerify(true); // Only if successful
+      setShowVerify(true);
     } catch (err) {
       setMsg(err.response?.data?.error || "Sign up failed");
       setMsgType("error");
-      setPassword(""); // Optional: clear password field on error
+      setPassword("");
     }
   };
 
@@ -82,13 +83,34 @@ const SignUp = () => {
         <button type="submit">Sign Up</button>
         <div
           className={
-            msgType === "success" ? "msg-success" : msgType === "error" ? "msg-error" : ""
+            "form-message " +
+            (msgType === "success"
+              ? "msg-success"
+              : msgType === "error"
+              ? "msg-error"
+              : "")
           }
         >
           {msg}
         </div>
+
+        <div>
+          <button
+            className="gsi-material-button google-auth-btn"
+            onClick={() => (window.location.href = "http://localhost:5542/auth/google")}
+          >
+            <div className="gsi-material-button-state"></div>
+            <div className="gsi-material-button-content-wrapper">
+              <div className="gsi-material-button-icon">
+                <GoogleIcon />
+              </div>
+              <span className="gsi-material-button-contents">Continue with Google</span>
+              <span style={{ display: "none" }}>Continue with Google</span>
+            </div>
+          </button>
+        </div>
         <p>
-          Already have an account?{" "}
+          Already have an account?
           <button type="button" onClick={() => navigate("/login")}>
             Sign In
           </button>

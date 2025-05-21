@@ -4,7 +4,11 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
-  const [userData, setUserData] = useState({ first_name: "", last_name: "" });
+  const [userData, setUserData] = useState({
+    first_name: "",
+    last_name: "",
+    photoUrl: "",
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +19,11 @@ export const AuthProvider = ({ children }) => {
       .then((res) => (res.ok ? res.json() : Promise.reject()))
       .then((data) => {
         if (data.authenticated) {
-          setUserData({ first_name: data.first_name, last_name: data.last_name });
+          setUserData({
+            first_name: data.first_name,
+            last_name: data.last_name,
+            photoUrl: data.photoUrl || "",
+          });
           setToken(true);
         }
         setLoading(false);
@@ -30,7 +38,11 @@ export const AuthProvider = ({ children }) => {
     });
     if (res.ok) {
       const data = await res.json();
-      setUserData({ first_name: data.first_name, last_name: data.last_name });
+      setUserData({
+        first_name: data.first_name,
+        last_name: data.last_name,
+        photoUrl: data.photoUrl || "",
+      });
       setToken(true);
     }
   };
@@ -41,7 +53,7 @@ export const AuthProvider = ({ children }) => {
       credentials: "include",
     });
     setToken(null);
-    setUserData({ first_name: "", last_name: "" });
+    setUserData({ first_name: "", last_name: "", photoUrl: "" });
   };
 
   if (loading) return null;

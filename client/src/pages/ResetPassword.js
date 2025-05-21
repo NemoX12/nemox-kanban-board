@@ -3,25 +3,43 @@ import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
 
+function isValidPassword(password) {
+  return /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password);
+}
+
 const ResetPassword = () => {
   const [params] = useSearchParams();
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
+  const [msgType, setMsgType] = useState("");
   const navigate = useNavigate();
   const token = params.get("token");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg("");
+    setMsgType("");
+    if (!password.trim()) {
+      setMsg("Please enter a new password.");
+      setMsgType("error");
+      return;
+    }
+    if (!isValidPassword(password)) {
+      setMsg("Password must be at least 8 characters, include a letter and a number.");
+      setMsgType("error");
+      return;
+    }
     try {
       await axios.post("http://localhost:5542/auth/reset-password", {
         token,
         newPassword: password,
       });
       setMsg("Password reset successful. You can now sign in.");
+      setMsgType("success");
       setTimeout(() => navigate("/login"), 2000);
     } catch {
       setMsg("Reset failed or link expired.");
+      setMsgType("error");
     }
   };
 
@@ -36,7 +54,13 @@ const ResetPassword = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Reset Password</button>
-        <div>{msg}</div>
+        <div
+          className={
+            msgType === "success" ? "msg-success" : msgType === "error" ? "msg-error" : ""
+          }
+        >
+          {msg}
+        </div>
       </form>
     </div>
   );
