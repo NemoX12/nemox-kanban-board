@@ -63,7 +63,6 @@ passport.use(
           profile.emails[0].value,
         ]);
       } else if (!user.rows[0].photo_url && profile.photos?.[0]?.value) {
-        // Optionally update photo_url if missing
         await db.query("UPDATE users SET photo_url = $1 WHERE username = $2", [
           profile.photos[0].value,
           profile.emails[0].value,
@@ -316,7 +315,7 @@ app.post("/auth/verify-signup", async (req, res) => {
   if (!pending || pending.code !== code || Date.now() > pending.expiresAt) {
     return res.status(400).json({ error: "Invalid or expired code." });
   }
-  // Create user in DB
+
   await db.query(
     "INSERT INTO users (username, password, first_name, last_name, is_verified) VALUES ($1, $2, $3, $4, $5)",
     [username, pending.password, pending.firstName, pending.lastName, true]

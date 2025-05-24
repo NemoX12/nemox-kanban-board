@@ -1,9 +1,10 @@
 import AvatarPlaceholder from "../assets/avatar_placeholder.jpg";
 
-const ProfileAvatar = ({ userData, alt = "Profile" }) => (
+const ProfileAvatar = ({ photoUrl, alt = "Profile", className = "" }) => (
   <img
-    src={userData.photoUrl ? userData.photoUrl : AvatarPlaceholder}
+    src={photoUrl && photoUrl.trim() !== "" ? photoUrl : AvatarPlaceholder}
     alt={alt}
+    className={className}
     style={{
       width: 48,
       height: 48,

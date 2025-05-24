@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
+import SpamNotice from "../components/SpamNotice";
 
 const VerifyCode = ({ email }) => {
   const [code, setCode] = useState("");
@@ -44,6 +45,7 @@ const VerifyCode = ({ email }) => {
         >
           {msg}
         </div>
+        <SpamNotice />
       </form>
     </div>
   );

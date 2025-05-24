@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../styles/AuthForm.css";
 import { useNavigate } from "react-router-dom";
+import SpamNotice from "../components/SpamNotice";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -61,13 +62,22 @@ const ForgotPassword = () => {
         <button type="submit" disabled={cooldown > 0}>
           {cooldown > 0 ? `Wait ${cooldown}s` : "Send Reset Link"}
         </button>
-        <div
-          className={
-            msgType === "success" ? "msg-success" : msgType === "error" ? "msg-error" : ""
-          }
-        >
-          {msg}
-        </div>
+        {msg ? (
+          <>
+            <div
+              className={
+                msgType === "success"
+                  ? "msg-success"
+                  : msgType === "error"
+                  ? "msg-error"
+                  : ""
+              }
+            >
+              {msg}
+            </div>
+            {msgType === "success" && <SpamNotice />}
+          </>
+        ) : null}
         <button type="button" onClick={() => navigate("/login")}>
           Turn back
         </button>
