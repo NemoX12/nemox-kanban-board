@@ -115,11 +115,14 @@ ALTER SEQUENCE public.tasks_id_seq OWNED BY public.tasks.id;
 CREATE TABLE public.users (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     username character varying(100) NOT NULL,
-    password character varying(255) NOT NULL,
+    password character varying(255),
     first_name character varying(100) NOT NULL,
     last_name character varying(100) NOT NULL,
     reset_token character varying(255),
-    reset_token_expiry timestamp without time zone
+    reset_token_expiry timestamp without time zone,
+    is_verified boolean DEFAULT false,
+    verification_token character varying(255),
+    photo_url text
 );
 
 
