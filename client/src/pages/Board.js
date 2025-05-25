@@ -7,6 +7,7 @@ import "../styles/Board.css";
 import Task from "../components/Task";
 import TaskForm from "../components/TaskForm";
 import Sidebar from "../components/Sidebar";
+import Loader from "../components/Loader";
 
 const Board = () => {
   const navigate = useNavigate();
@@ -15,8 +16,10 @@ const Board = () => {
   const [tasks, setTasks] = useState([]);
   const [taskCreation, setTaskCreation] = useState("");
   const [highlightedColumn, setHighlightedColumn] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchTasks = async () => {
+    setLoading(true);
     try {
       const res = await axios.get("http://localhost:5542/board", {
         withCredentials: true,
@@ -27,10 +30,14 @@ const Board = () => {
         await logout();
         navigate("/login");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => fetchTasks, []);
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const handleTaskForm = () => (
     <TaskForm
@@ -67,15 +74,20 @@ const Board = () => {
       completion_date = null;
     }
 
-    await axios.put(
-      `http://localhost:5542/board/${taskId}`,
-      {
-        status: newStatus,
-        completion_date,
-      },
-      { withCredentials: true }
-    );
-    fetchTasks();
+    setLoading(true);
+    try {
+      await axios.put(
+        `http://localhost:5542/board/${taskId}`,
+        {
+          status: newStatus,
+          completion_date,
+        },
+        { withCredentials: true }
+      );
+      await fetchTasks();
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderColumn = (status, label) => (
@@ -123,7 +135,8 @@ const Board = () => {
   );
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", position: "relative" }}>
+      {loading && <Loader />}
       <Sidebar />
       <div style={{ marginLeft: 200, width: "100%" }}>
         <div className="board">
