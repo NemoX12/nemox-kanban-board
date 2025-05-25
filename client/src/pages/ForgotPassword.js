@@ -41,7 +41,9 @@ const ForgotPassword = () => {
     if (cooldown > 0) return;
     setLoading(true);
     try {
-      await axios.post("http://localhost:5542/auth/forgot-password", { email });
+      await axios.post("https://nemox-kanban-board.onrender.com/auth/forgot-password", {
+        email,
+      });
       setMsg("If that email exists, a reset link has been sent.");
       setMsgType("success");
       setCooldown(60);

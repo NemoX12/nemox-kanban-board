@@ -22,7 +22,7 @@ const SignIn = () => {
     setLoading(true);
     try {
       await axios.post(
-        "http://localhost:5542/auth/signin",
+        "https://nemox-kanban-board.onrender.com/auth/signin",
         { username, password },
         { withCredentials: true }
       );
@@ -70,7 +70,9 @@ const SignIn = () => {
         </div>
         <button
           className="gsi-material-button google-auth-btn"
-          onClick={() => (window.location.href = "http://localhost:5542/auth/google")}
+          onClick={() =>
+            (window.location.href = "https://nemox-kanban-board.onrender.com/auth/google")
+          }
         >
           <div className="gsi-material-button-state"></div>
           <div className="gsi-material-button-content-wrapper">

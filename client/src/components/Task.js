@@ -18,7 +18,9 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
   };
 
   const handleTaskDelete = async () => {
-    await axios.delete(`http://localhost:5542/board/${id}`, { withCredentials: true });
+    await axios.delete(`https://nemox-kanban-board.onrender.com/board/${id}`, {
+      withCredentials: true,
+    });
     fetchTasks();
   };
 
@@ -32,7 +34,7 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
       return;
     }
     await axios.put(
-      `http://localhost:5542/board/${id}`,
+      `https://nemox-kanban-board.onrender.com/board/${id}`,
       {
         content: taskContent,
         status: status,

@@ -21,7 +21,7 @@ const Board = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5542/board", {
+      const res = await axios.get("https://nemox-kanban-board.onrender.com/board", {
         withCredentials: true,
       });
       setTasks(res.data);
@@ -77,7 +77,7 @@ const Board = () => {
     setLoading(true);
     try {
       await axios.put(
-        `http://localhost:5542/board/${taskId}`,
+        `https://nemox-kanban-board.onrender.com/board/${taskId}`,
         {
           status: newStatus,
           completion_date,

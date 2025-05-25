@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5542/auth/check", {
+    fetch("https://nemox-kanban-board.onrender.com/auth/check", {
       method: "GET",
       credentials: "include",
     })
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async () => {
-    const res = await fetch("http://localhost:5542/auth/check", {
+    const res = await fetch("https://nemox-kanban-board.onrender.com/auth/check", {
       method: "GET",
       credentials: "include",
     });
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await fetch("http://localhost:5542/auth/logout", {
+    await fetch("https://nemox-kanban-board.onrender.com/auth/logout", {
       method: "POST",
       credentials: "include",
     });
