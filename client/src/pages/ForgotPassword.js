@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles/AuthForm.css";
 import { useNavigate } from "react-router-dom";
 import SpamNotice from "../components/SpamNotice";
+import Loader from "../components/Loader";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const ForgotPassword = () => {
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState("");
   const [cooldown, setCooldown] = useState(0);
+  const [loading, setLoading] = useState(false);
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -37,6 +39,7 @@ const ForgotPassword = () => {
       return;
     }
     if (cooldown > 0) return;
+    setLoading(true);
     try {
       await axios.post("http://localhost:5542/auth/forgot-password", { email });
       setMsg("If that email exists, a reset link has been sent.");
@@ -46,11 +49,14 @@ const ForgotPassword = () => {
       setMsg(err.response?.data?.error || "Something went wrong. Please try again.");
       setMsgType("error");
       if (err.response?.status === 429) setCooldown(60);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="auth-form-outer">
+    <div className="auth-form-outer" style={{ position: "relative" }}>
+      {loading && <Loader />}
       <form className="auth-form-container" onSubmit={handleSubmit}>
         <h2>Forgot Password</h2>
         <input

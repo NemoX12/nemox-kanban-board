@@ -5,6 +5,7 @@ const ProfileAvatar = ({ photoUrl, alt = "Profile", className = "" }) => (
     src={photoUrl && photoUrl.trim() !== "" ? photoUrl : AvatarPlaceholder}
     alt={alt}
     className={className}
+    referrerPolicy="no-referrer"
     style={{
       width: 48,
       height: 48,

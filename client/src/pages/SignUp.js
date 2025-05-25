@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import VerifyCode from "./VerifyCode";
 import { ReactComponent as GoogleIcon } from "../assets/google_icon.svg";
 import "../styles/AuthForm.css";
+import Loader from "../components/Loader";
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -20,6 +21,7 @@ const SignUp = () => {
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState("");
   const [showVerify, setShowVerify] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -36,6 +38,7 @@ const SignUp = () => {
       setMsgType("error");
       return;
     }
+    setLoading(true);
     try {
       await axios.post("http://localhost:5542/auth/request-signup", {
         username,
@@ -48,6 +51,8 @@ const SignUp = () => {
       setMsg(err.response?.data?.error || "Sign up failed");
       setMsgType("error");
       setPassword("");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,7 +61,8 @@ const SignUp = () => {
   }
 
   return (
-    <div className="auth-form-outer">
+    <div className="auth-form-outer" style={{ position: "relative" }}>
+      {loading && <Loader />}
       <form className="auth-form-container" onSubmit={handleSubmit}>
         <h2>Sign Up</h2>
         <input
@@ -80,7 +86,9 @@ const SignUp = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={loading}>
+          Sign Up
+        </button>
         <div
           className={
             "form-message " +

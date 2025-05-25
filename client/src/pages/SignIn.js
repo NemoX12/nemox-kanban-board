@@ -4,12 +4,14 @@ import { ReactComponent as GoogleIcon } from "../assets/google_icon.svg";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
+import Loader from "../components/Loader";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -17,6 +19,7 @@ const SignIn = () => {
     e.preventDefault();
     setMsg("");
     setMsgType("");
+    setLoading(true);
     try {
       await axios.post(
         "http://localhost:5542/auth/signin",
@@ -29,11 +32,14 @@ const SignIn = () => {
     } catch (err) {
       setMsgType("error");
       setMsg(err.response?.data?.error || "Sign in failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="auth-form-outer">
+    <div className="auth-form-outer" style={{ position: "relative" }}>
+      {loading && <Loader />}
       <form className="auth-form-container" onSubmit={handleSubmit}>
         <h2>Sign In</h2>
         <input
@@ -47,7 +53,9 @@ const SignIn = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Sign In</button>
+        <button type="submit" disabled={loading}>
+          Sign In
+        </button>
         <div
           className={
             "form-message " +
