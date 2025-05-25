@@ -18,7 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://nemox-kanban-board.vercel.app/",
     credentials: true,
   })
 );
@@ -262,7 +262,7 @@ app.post("/auth/forgot-password", async (req, res) => {
     [user.id, email]
   );
 
-  const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+  const resetLink = `https://nemox-kanban-board.vercel.app/reset-password?token=${token}`;
   await sendMail({
     to: email,
     subject: "Password Reset",
@@ -357,7 +357,9 @@ app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "em
 
 app.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "http://localhost:3000/login" }),
+  passport.authenticate("google", {
+    failureRedirect: "https://nemox-kanban-board.vercel.app/login",
+  }),
   (req, res) => {
     const token = jwt.sign(
       { userId: req.user.id, username: req.user.username },
@@ -371,7 +373,7 @@ app.get(
       sameSite: "none",
       path: "/",
     });
-    res.redirect("http://localhost:3000/board");
+    res.redirect("https://nemox-kanban-board.vercel.app/board");
   }
 );
 
