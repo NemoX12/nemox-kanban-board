@@ -366,9 +366,10 @@ app.get(
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true, // always true for cross-site and HTTPS
       maxAge: 30 * 60 * 1000,
-      sameSite: "lax",
+      sameSite: "none", // must be "none" for cross-site
+      path: "/", // ensure path is "/"
     });
     res.redirect("http://localhost:3000/board");
   }
