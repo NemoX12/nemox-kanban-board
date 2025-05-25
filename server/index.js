@@ -199,9 +199,10 @@ app.post("/auth/signin", async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 30 * 60 * 1000,
-      sameSite: "lax",
+      sameSite: "none",
+      path: "/",
     });
     res.json({ message: "Authenticated" });
   } catch (err) {
