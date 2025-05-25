@@ -18,7 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://nemox-kanban-board.vercel.app/",
+    origin: "https://nemox-kanban-board.vercel.app",
     credentials: true,
   })
 );
