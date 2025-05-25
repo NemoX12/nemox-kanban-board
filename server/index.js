@@ -42,7 +42,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:5542/auth/google/callback",
+      callbackURL: "https://nemox-kanban-board.onrender.com/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       let user = await db.query("SELECT * FROM users WHERE username = $1", [
@@ -199,9 +199,10 @@ app.post("/auth/signin", async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 30 * 60 * 1000,
-      sameSite: "lax",
+      sameSite: "none",
+      path: "/",
     });
     res.json({ message: "Authenticated" });
   } catch (err) {
@@ -210,7 +211,12 @@ app.post("/auth/signin", async (req, res) => {
 });
 
 app.post("/auth/logout", (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+  });
   res.json({ message: "Logged out" });
 });
 
@@ -360,9 +366,10 @@ app.get(
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true, // always true for cross-site and HTTPS
       maxAge: 30 * 60 * 1000,
-      sameSite: "lax",
+      sameSite: "none", // must be "none" for cross-site
+      path: "/", // ensure path is "/"
     });
     res.redirect("http://localhost:3000/board");
   }
