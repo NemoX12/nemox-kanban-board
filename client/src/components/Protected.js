@@ -8,7 +8,7 @@ const Protected = () => {
 
   const fetchProtected = async () => {
     try {
-      const res = await axios.get("http://localhost:5542/protected", {
+      const res = await axios.get("https://nemox-kanban-board.onrender.com/protected", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMsg(JSON.stringify(res.data));

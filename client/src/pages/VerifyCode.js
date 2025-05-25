@@ -15,7 +15,7 @@ const VerifyCode = ({ email }) => {
     setMsg("");
     setMsgType("");
     try {
-      await axios.post("http://localhost:5542/auth/verify-signup", {
+      await axios.post("https://nemox-kanban-board.onrender.com/auth/verify-signup", {
         username: email,
         code,
       });

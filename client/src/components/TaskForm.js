@@ -17,7 +17,7 @@ const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
       return;
     }
     await axios.post(
-      "http://localhost:5542/board",
+      "https://nemox-kanban-board.onrender.com/board",
       {
         content: taskContent,
         status: taskCreation,

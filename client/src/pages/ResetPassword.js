@@ -30,7 +30,7 @@ const ResetPassword = () => {
       return;
     }
     try {
-      await axios.post("http://localhost:5542/auth/reset-password", {
+      await axios.post("https://nemox-kanban-board.onrender.com/auth/reset-password", {
         token,
         newPassword: password,
       });
