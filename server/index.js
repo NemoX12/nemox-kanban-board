@@ -42,7 +42,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:5542/auth/google/callback",
+      callbackURL: "https://nemox-kanban-board.onrender.com/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       let user = await db.query("SELECT * FROM users WHERE username = $1", [
