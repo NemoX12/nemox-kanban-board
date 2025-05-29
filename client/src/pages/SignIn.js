@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
 import Loader from "../components/Loader";
+import backendLink from "../utils/backendLink";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
@@ -22,7 +23,7 @@ const SignIn = () => {
     setLoading(true);
     try {
       await axios.post(
-        "https://nemox-kanban-board.onrender.com/auth/signin",
+        `${backendLink()}/auth/signin`,
         { username, password },
         { withCredentials: true }
       );
@@ -70,9 +71,7 @@ const SignIn = () => {
         </div>
         <button
           className="gsi-material-button google-auth-btn"
-          onClick={() =>
-            (window.location.href = "https://nemox-kanban-board.onrender.com/auth/google")
-          }
+          onClick={() => (window.location.href = `${backendLink()}/auth/google`)}
         >
           <div className="gsi-material-button-state"></div>
           <div className="gsi-material-button-content-wrapper">

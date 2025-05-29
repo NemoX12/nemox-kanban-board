@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
 import SpamNotice from "../components/SpamNotice";
+import backendLink from "../utils/backendLink";
 
 const VerifyCode = ({ email }) => {
   const [code, setCode] = useState("");
@@ -15,7 +16,7 @@ const VerifyCode = ({ email }) => {
     setMsg("");
     setMsgType("");
     try {
-      await axios.post("https://nemox-kanban-board.onrender.com/auth/verify-signup", {
+      await axios.post(`${backendLink()}/auth/verify-signup`, {
         username: email,
         code,
       });

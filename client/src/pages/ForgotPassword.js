@@ -4,6 +4,7 @@ import "../styles/AuthForm.css";
 import { useNavigate } from "react-router-dom";
 import SpamNotice from "../components/SpamNotice";
 import Loader from "../components/Loader";
+import backendLink from "../utils/backendLink";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const ForgotPassword = () => {
     if (cooldown > 0) return;
     setLoading(true);
     try {
-      await axios.post("https://nemox-kanban-board.onrender.com/auth/forgot-password", {
+      await axios.post(`${backendLink()}/auth/forgot-password`, {
         email,
       });
       setMsg("If that email exists, a reset link has been sent.");

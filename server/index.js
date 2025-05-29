@@ -10,7 +10,9 @@ const { sendMail } = require("./email");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const session = require("express-session");
+const os = require("os");
 
+console.log(getFrontendLink());
 const pendingSignups = {};
 
 const app = express();
@@ -18,7 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://nemox-kanban-board.vercel.app",
+    origin: [getFrontendLink()],
     credentials: true,
   })
 );
@@ -42,7 +44,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://nemox-kanban-board.onrender.com/auth/google/callback",
+      callbackURL: `${getServerLink()}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       let user = await db.query("SELECT * FROM users WHERE username = $1", [
@@ -261,8 +263,7 @@ app.post("/auth/forgot-password", async (req, res) => {
     "INSERT INTO email_logs (user_id, email, sent_at) VALUES ($1, $2, NOW())",
     [user.id, email]
   );
-
-  const resetLink = `https://nemox-kanban-board.vercel.app/reset-password?token=${token}`;
+  const resetLink = `${getFrontendLink()}/reset-password?token=${token}`;
   await sendMail({
     to: email,
     subject: "Password Reset",
@@ -358,7 +359,7 @@ app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "em
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "https://nemox-kanban-board.vercel.app/login",
+    failureRedirect: `${getFrontendLink()}/login`,
   }),
   (req, res) => {
     const token = jwt.sign(
@@ -373,9 +374,33 @@ app.get(
       sameSite: "none",
       path: "/",
     });
-    res.redirect("https://nemox-kanban-board.vercel.app/board");
+    res.redirect(`${getFrontendLink()}/board`);
   }
 );
+
+function getFrontendLink() {
+  const hostname = os.hostname();
+  if (
+    process.env.NODE_ENV !== "production" ||
+    hostname === "localhost" ||
+    hostname === "127.0.0.1"
+  ) {
+    return "http://localhost:3000";
+  }
+  return process.env.REMOTE_FRONTEND_LINK;
+}
+
+function getServerLink() {
+  const hostname = os.hostname();
+  if (
+    process.env.NODE_ENV !== "production" ||
+    hostname === "localhost" ||
+    hostname === "127.0.0.1"
+  ) {
+    return "http://localhost:5542";
+  }
+  return process.env.REMOTE_SERVER_LINK;
+}
 
 app.listen(SERVER_PORT, () => {
   console.log("✅ Server is running on port:", SERVER_PORT);

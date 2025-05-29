@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import backendLink from "../utils/backendLink";
 
 export const AuthContext = createContext();
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://nemox-kanban-board.onrender.com/auth/check", {
+    fetch(`${backendLink()}/auth/check`, {
       method: "GET",
       credentials: "include",
     })
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async () => {
-    const res = await fetch("https://nemox-kanban-board.onrender.com/auth/check", {
+    const res = await fetch(`${backendLink()}/auth/check`, {
       method: "GET",
       credentials: "include",
     });
@@ -48,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await fetch("https://nemox-kanban-board.onrender.com/auth/logout", {
+    await fetch(`${backendLink()}/auth/logout`, {
       method: "POST",
       credentials: "include",
     });
