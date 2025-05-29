@@ -5,6 +5,7 @@ import VerifyCode from "./VerifyCode";
 import { ReactComponent as GoogleIcon } from "../assets/google_icon.svg";
 import "../styles/AuthForm.css";
 import Loader from "../components/Loader";
+import backendLink from "../utils/backendLink";
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -40,7 +41,7 @@ const SignUp = () => {
     }
     setLoading(true);
     try {
-      await axios.post("https://nemox-kanban-board.onrender.com/auth/request-signup", {
+      await axios.post(`${backendLink()}/auth/request-signup`, {
         username,
         password,
         firstName,
@@ -105,10 +106,7 @@ const SignUp = () => {
         <div>
           <button
             className="gsi-material-button google-auth-btn"
-            onClick={() =>
-              (window.location.href =
-                "https://nemox-kanban-board.onrender.com/auth/google")
-            }
+            onClick={() => (window.location.href = `${backendLink()}/auth/google`)}
           >
             <div className="gsi-material-button-state"></div>
             <div className="gsi-material-button-content-wrapper">

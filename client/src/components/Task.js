@@ -7,6 +7,7 @@ import axios from "axios";
 import "../styles/Task.css";
 import formatTimestamp from "../utils/formatTimestamp";
 import formatFullDate from "../utils/formatFullDate";
+import backendLink from "../utils/backendLink";
 
 const Task = ({ creation_date, content, status, completion_date, id, fetchTasks }) => {
   const [editing, setEditing] = useState(false);
@@ -18,7 +19,7 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
   };
 
   const handleTaskDelete = async () => {
-    await axios.delete(`https://nemox-kanban-board.onrender.com/board/${id}`, {
+    await axios.delete(`${backendLink()}/board/${id}`, {
       withCredentials: true,
     });
     fetchTasks();
@@ -34,7 +35,7 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
       return;
     }
     await axios.put(
-      `https://nemox-kanban-board.onrender.com/board/${id}`,
+      `${backendLink()}/board/${id}`,
       {
         content: taskContent,
         status: status,

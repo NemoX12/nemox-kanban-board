@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { CiSquareCheck } from "react-icons/ci";
 import { FaRegTimesCircle } from "react-icons/fa";
+import backendLink from "../utils/backendLink";
 
 const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
   const [taskContent, setTaskContent] = useState("");
@@ -17,7 +18,7 @@ const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
       return;
     }
     await axios.post(
-      "https://nemox-kanban-board.onrender.com/board",
+      `${backendLink()}/board`,
       {
         content: taskContent,
         status: taskCreation,

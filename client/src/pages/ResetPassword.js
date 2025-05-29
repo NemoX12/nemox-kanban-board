@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
+import backendLink from "../utils/backendLink";
 
 function isValidPassword(password) {
   return /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password);
@@ -30,7 +31,7 @@ const ResetPassword = () => {
       return;
     }
     try {
-      await axios.post("https://nemox-kanban-board.onrender.com/auth/reset-password", {
+      await axios.post(`${backendLink()}/auth/reset-password`, {
         token,
         newPassword: password,
       });

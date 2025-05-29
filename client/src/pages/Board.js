@@ -8,6 +8,7 @@ import Task from "../components/Task";
 import TaskForm from "../components/TaskForm";
 import Sidebar from "../components/Sidebar";
 import Loader from "../components/Loader";
+import backendLink from "../utils/backendLink";
 
 const Board = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Board = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("https://nemox-kanban-board.onrender.com/board", {
+      const res = await axios.get(`${backendLink()}/board`, {
         withCredentials: true,
       });
       setTasks(res.data);
@@ -77,7 +78,7 @@ const Board = () => {
     setLoading(true);
     try {
       await axios.put(
-        `https://nemox-kanban-board.onrender.com/board/${taskId}`,
+        `${backendLink()}/board/${taskId}`,
         {
           status: newStatus,
           completion_date,

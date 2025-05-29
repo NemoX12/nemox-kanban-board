@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import backendLink from "../utils/backendLink";
 
 const Protected = () => {
   const { token, logout } = useContext(AuthContext);
@@ -8,7 +9,7 @@ const Protected = () => {
 
   const fetchProtected = async () => {
     try {
-      const res = await axios.get("https://nemox-kanban-board.onrender.com/protected", {
+      const res = await axios.get(`${backendLink()}/protected`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMsg(JSON.stringify(res.data));
