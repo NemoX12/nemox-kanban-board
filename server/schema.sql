@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.17 (Homebrew)
--- Dumped by pg_dump version 14.17 (Homebrew)
+-- Dumped from database version 16.9
+-- Dumped by pg_dump version 16.9 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -35,7 +35,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: email_logs; Type: TABLE; Schema: public; Owner: nemox
+-- Name: email_logs; Type: TABLE; Schema: public; Owner: avnadmin
 --
 
 CREATE TABLE public.email_logs (
@@ -46,10 +46,10 @@ CREATE TABLE public.email_logs (
 );
 
 
-ALTER TABLE public.email_logs OWNER TO nemox;
+ALTER TABLE public.email_logs OWNER TO avnadmin;
 
 --
--- Name: email_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: nemox
+-- Name: email_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: avnadmin
 --
 
 CREATE SEQUENCE public.email_logs_id_seq
@@ -61,17 +61,17 @@ CREATE SEQUENCE public.email_logs_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.email_logs_id_seq OWNER TO nemox;
+ALTER SEQUENCE public.email_logs_id_seq OWNER TO avnadmin;
 
 --
--- Name: email_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nemox
+-- Name: email_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: avnadmin
 --
 
 ALTER SEQUENCE public.email_logs_id_seq OWNED BY public.email_logs.id;
 
 
 --
--- Name: tasks; Type: TABLE; Schema: public; Owner: nemox
+-- Name: tasks; Type: TABLE; Schema: public; Owner: avnadmin
 --
 
 CREATE TABLE public.tasks (
@@ -84,10 +84,10 @@ CREATE TABLE public.tasks (
 );
 
 
-ALTER TABLE public.tasks OWNER TO nemox;
+ALTER TABLE public.tasks OWNER TO avnadmin;
 
 --
--- Name: tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: nemox
+-- Name: tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: avnadmin
 --
 
 CREATE SEQUENCE public.tasks_id_seq
@@ -99,17 +99,17 @@ CREATE SEQUENCE public.tasks_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.tasks_id_seq OWNER TO nemox;
+ALTER SEQUENCE public.tasks_id_seq OWNER TO avnadmin;
 
 --
--- Name: tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nemox
+-- Name: tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: avnadmin
 --
 
 ALTER SEQUENCE public.tasks_id_seq OWNED BY public.tasks.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: nemox
+-- Name: users; Type: TABLE; Schema: public; Owner: avnadmin
 --
 
 CREATE TABLE public.users (
@@ -126,10 +126,10 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO nemox;
+ALTER TABLE public.users OWNER TO avnadmin;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: nemox
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: avnadmin
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -141,31 +141,31 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO nemox;
+ALTER SEQUENCE public.users_id_seq OWNER TO avnadmin;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: nemox
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: avnadmin
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: email_logs id; Type: DEFAULT; Schema: public; Owner: nemox
+-- Name: email_logs id; Type: DEFAULT; Schema: public; Owner: avnadmin
 --
 
 ALTER TABLE ONLY public.email_logs ALTER COLUMN id SET DEFAULT nextval('public.email_logs_id_seq'::regclass);
 
 
 --
--- Name: tasks id; Type: DEFAULT; Schema: public; Owner: nemox
+-- Name: tasks id; Type: DEFAULT; Schema: public; Owner: avnadmin
 --
 
 ALTER TABLE ONLY public.tasks ALTER COLUMN id SET DEFAULT nextval('public.tasks_id_seq'::regclass);
 
 
 --
--- Name: email_logs email_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: nemox
+-- Name: email_logs email_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: avnadmin
 --
 
 ALTER TABLE ONLY public.email_logs
@@ -173,7 +173,7 @@ ALTER TABLE ONLY public.email_logs
 
 
 --
--- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: nemox
+-- Name: tasks tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: avnadmin
 --
 
 ALTER TABLE ONLY public.tasks
@@ -181,7 +181,7 @@ ALTER TABLE ONLY public.tasks
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: nemox
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: avnadmin
 --
 
 ALTER TABLE ONLY public.users
@@ -189,7 +189,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: nemox
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: avnadmin
 --
 
 ALTER TABLE ONLY public.users
@@ -197,7 +197,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: email_logs email_logs_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: nemox
+-- Name: email_logs email_logs_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: avnadmin
 --
 
 ALTER TABLE ONLY public.email_logs
@@ -205,7 +205,7 @@ ALTER TABLE ONLY public.email_logs
 
 
 --
--- Name: tasks tasks_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: nemox
+-- Name: tasks tasks_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: avnadmin
 --
 
 ALTER TABLE ONLY public.tasks

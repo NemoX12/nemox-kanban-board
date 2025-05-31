@@ -12,7 +12,6 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const session = require("express-session");
 const os = require("os");
 
-console.log(getFrontendLink());
 const pendingSignups = {};
 
 const app = express();
