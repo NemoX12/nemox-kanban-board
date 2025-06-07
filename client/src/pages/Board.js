@@ -18,6 +18,7 @@ const Board = () => {
   const [taskCreation, setTaskCreation] = useState("");
   const [highlightedColumn, setHighlightedColumn] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isSidebarActive, setIsSidebarActive] = useState(true);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -138,8 +139,11 @@ const Board = () => {
   return (
     <div style={{ display: "flex", position: "relative" }}>
       {loading && <Loader />}
-      <Sidebar />
-      <div style={{ marginLeft: 200, width: "100%" }}>
+      <Sidebar
+        isSidebarActive={isSidebarActive}
+        setIsSidebarActive={setIsSidebarActive}
+      />
+      <div className={`board_wrapper ${isSidebarActive ? "" : " sidebar_collapsed"}`}>
         <div className="board">
           <div className="board_container">
             {renderColumn("todo", "To Do")}

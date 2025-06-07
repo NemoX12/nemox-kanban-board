@@ -6,13 +6,6 @@ const ProfileAvatar = ({ photoUrl, alt = "Profile", className = "" }) => (
     alt={alt}
     className={className}
     referrerPolicy="no-referrer"
-    style={{
-      width: 48,
-      height: 48,
-      borderRadius: "50%",
-      objectFit: "cover",
-      border: "1px solid #ccc",
-    }}
   />
 );
 

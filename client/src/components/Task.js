@@ -9,10 +9,17 @@ import formatTimestamp from "../utils/formatTimestamp";
 import formatFullDate from "../utils/formatFullDate";
 import backendLink from "../utils/backendLink";
 
+const STATUS_OPTIONS = [
+  { value: "todo", label: "To Do" },
+  { value: "in_progress", label: "In Progress" },
+  { value: "finished", label: "Finished" },
+];
+
 const Task = ({ creation_date, content, status, completion_date, id, fetchTasks }) => {
   const [editing, setEditing] = useState(false);
   const [taskContent, setTaskContent] = useState(content);
   const [formError, setFormError] = useState("");
+  const [currentStatus, setCurrentStatus] = useState(status);
 
   const handleDragStart = (e) => {
     e.dataTransfer.setData("taskId", id);
@@ -38,8 +45,8 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
       `${backendLink()}/board/${id}`,
       {
         content: taskContent,
-        status: status,
-        completion_date: status === "finished" ? new Date() : null,
+        status: currentStatus,
+        completion_date: currentStatus === "finished" ? new Date() : null,
       },
       { withCredentials: true }
     );
@@ -47,10 +54,36 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
     fetchTasks();
   };
 
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+    setCurrentStatus(newStatus);
+    await axios.put(
+      `${backendLink()}/board/${id}`,
+      {
+        content: taskContent,
+        status: newStatus,
+        completion_date: newStatus === "finished" ? new Date() : null,
+      },
+      { withCredentials: true }
+    );
+    fetchTasks();
+  };
+
   return (
     <div className="task" draggable onDragStart={handleDragStart}>
       <div className="task_header">
         <p title={formatFullDate(creation_date)}>{formatTimestamp(creation_date)}</p>
+        <select
+          className="task_status_select"
+          value={currentStatus}
+          onChange={handleStatusChange}
+        >
+          {STATUS_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="task_content">
         {!editing ? (

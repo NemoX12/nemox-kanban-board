@@ -215,3 +215,10 @@
   margin-left: 4px;
   font-size: 1rem;
 }
+
+@media screen and (max-width: 500px) {
+  .auth-form-container {
+    width: 300px;
+    box-sizing: border-box;
+  }
+}
