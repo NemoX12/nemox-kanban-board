@@ -133,7 +133,7 @@ npm start
   `REACT_APP_BACKEND_REMOTE_LINK` — URL of your deployed backend
 
 - **Backend:**  
-  See `.env.example` above for all required variables.
+  See `.env` above for all required variables.
 
 ---
 
