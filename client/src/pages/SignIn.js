@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { ReactComponent as GoogleIcon } from "../assets/google_icon.svg";
 import { AuthContext } from "../context/AuthContext";

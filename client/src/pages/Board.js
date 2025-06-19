@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import { CiSquarePlus } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ const Board = () => {
   const [loading, setLoading] = useState(false);
   const [isSidebarActive, setIsSidebarActive] = useState(true);
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${backendLink()}/board`, {
@@ -35,11 +35,11 @@ const Board = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [logout, navigate]);
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [fetchTasks]);
 
   const handleTaskForm = () => (
     <TaskForm
