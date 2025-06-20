@@ -377,6 +377,15 @@ app.get(
   }
 );
 
+app.get("/test-cookie", (req, res) => {
+  res.cookie("testcookie", "hello", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+  res.send("Cookie set");
+});
+
 function getFrontendLink() {
   const hostname = os.hostname();
   if (
