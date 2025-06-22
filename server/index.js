@@ -200,9 +200,9 @@ app.post("/auth/signin", async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      maxAge: 30 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "none",
+      maxAge: 30 * 60 * 1000,
       path: "/",
     });
     res.json({ message: "Authenticated" });
@@ -214,7 +214,7 @@ app.post("/auth/signin", async (req, res) => {
 app.post("/auth/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "none",
     path: "/",
   });
@@ -368,23 +368,14 @@ app.get(
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      maxAge: 30 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "none",
+      maxAge: 30 * 60 * 1000,
       path: "/",
     });
     res.redirect(`${getFrontendLink()}/board`);
   }
 );
-
-app.get("/test-cookie", (req, res) => {
-  res.cookie("testcookie", "hello", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  });
-  res.send("Cookie set");
-});
 
 function getFrontendLink() {
   const hostname = os.hostname();
