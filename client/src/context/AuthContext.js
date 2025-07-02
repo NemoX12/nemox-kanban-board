@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import backendLink from "../utils/backendLink";
+import Loader from "../components/Loader";
 
 export const AuthContext = createContext();
 
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }) => {
     setUserData({ first_name: "", last_name: "", photoUrl: "" });
   };
 
-  if (loading) return null;
+  if (loading) return <Loader />;
 
   return (
     <AuthContext.Provider value={{ token, userData, login, logout }}>
