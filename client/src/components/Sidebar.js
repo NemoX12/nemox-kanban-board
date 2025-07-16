@@ -33,6 +33,7 @@ const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
         <button
           className="sidebar-buttons-sidebar"
           onClick={() => setIsSidebarActive((prev) => !prev)}
+          aria-label="Open/Close a sidebar"
         >
           {isSidebarActive ? <RiArrowLeftDoubleLine /> : <RiArrowRightDoubleLine />}
         </button>

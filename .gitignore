@@ -5,7 +5,7 @@
 
 /client/coverage
 
-/build
+/client/build
 
 /client/.DS_Store
 .DS_Store

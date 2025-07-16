@@ -87,13 +87,6 @@ const SignIn = () => {
             type="button"
             className="link-button"
             onClick={() => navigate("/forgot-password")}
-            style={{
-              background: "none",
-              border: "none",
-              color: "#4f8cff",
-              cursor: "pointer",
-              padding: 0,
-            }}
           >
             Forgot password?
           </button>

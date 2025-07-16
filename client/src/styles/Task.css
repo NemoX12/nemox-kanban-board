@@ -29,6 +29,14 @@
   align-items: center;
 }
 
+.task_header_status {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+}
+
 .task_header p {
   cursor: pointer;
 }

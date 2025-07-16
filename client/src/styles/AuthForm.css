@@ -38,14 +38,14 @@
 }
 
 .auth-form-container input:focus {
-  border: 1.5px solid #4f8cff;
+  border: 1.5px solid #004ad1;
   outline: none;
 }
 
 .auth-form-container button[type="submit"] {
   width: 100%;
   padding: 10px 0;
-  background: #4f8cff;
+  background: #004ad1;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -69,7 +69,7 @@
 .auth-form-container button[type="button"] {
   background: none;
   border: none;
-  color: #4f8cff;
+  color: #004ad1;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -208,11 +208,20 @@
 .auth-form-container button[type="button"]:not(.gsi-material-button) {
   background: none;
   border: none;
-  color: #4f8cff;
+  color: #004ad1;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
   margin-left: 4px;
+  font-size: 1rem;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #004ad1;
+  cursor: pointer;
+  padding: 0;
   font-size: 1rem;
 }
 

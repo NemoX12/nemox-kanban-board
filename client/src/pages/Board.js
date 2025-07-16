@@ -96,7 +96,7 @@ const Board = () => {
     <div className="board_container_column">
       <div className="board_container_column_header">
         <p>{label}</p>
-        <button onClick={() => setTaskCreation(status)}>
+        <button onClick={() => setTaskCreation(status)} aria-label="Create a new Task">
           <CiSquarePlus size={22} />
         </button>
       </div>

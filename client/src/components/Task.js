@@ -73,17 +73,21 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
     <div className="task" draggable onDragStart={handleDragStart}>
       <div className="task_header">
         <p title={formatFullDate(creation_date)}>{formatTimestamp(creation_date)}</p>
-        <select
-          className="task_status_select"
-          value={currentStatus}
-          onChange={handleStatusChange}
-        >
-          {STATUS_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <div className="task_header_status">
+          <label id="status">Status:</label>
+          <select
+            className="task_status_select"
+            value={currentStatus}
+            onChange={handleStatusChange}
+            aria-labelledby="status"
+          >
+            {STATUS_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="task_content">
         {!editing ? (
@@ -104,10 +108,18 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
         )}
       </div>
       <div className="task_footer">
-        <button className="task_footer_delete" onClick={handleTaskDelete}>
+        <button
+          className="task_footer_delete"
+          onClick={handleTaskDelete}
+          aria-label="Delete a Task"
+        >
           <FaRegTrashAlt size={16} />
         </button>
-        <button className="task_footer_edit" onClick={() => setEditing((prev) => !prev)}>
+        <button
+          className="task_footer_edit"
+          onClick={() => setEditing((prev) => !prev)}
+          aria-label="Edit a Task"
+        >
           {!editing ? <FaPen size={16} /> : <FaRegTimesCircle size={16} />}
         </button>
         {completion_date && (
