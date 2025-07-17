@@ -6,13 +6,8 @@ import { ReactComponent as GoogleIcon } from "../assets/google_icon.svg";
 import "../styles/AuthForm.css";
 import Loader from "../components/Loader";
 import backendLink from "../utils/backendLink";
-
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-function isValidPassword(password) {
-  return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password);
-}
+import * as z from "zod";
+import signUp from "../types/signUp";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -29,16 +24,19 @@ const SignUp = () => {
     e.preventDefault();
     setMsg("");
     setMsgType("");
-    if (!isValidEmail(username)) {
-      setMsg("Please enter a valid email address.");
+
+    const result = z.safeParse(signUp, {
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+      password: password,
+    });
+    if (result.error) {
       setMsgType("error");
+      setMsg(result.error.issues[0].message);
       return;
     }
-    if (!isValidPassword(password)) {
-      setMsg("Password must be at least 8 characters, include a letter and a number.");
-      setMsgType("error");
-      return;
-    }
+
     setLoading(true);
     try {
       await axios.post(`${backendLink()}/auth/request-signup`, {

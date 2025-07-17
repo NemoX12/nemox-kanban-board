@@ -3,10 +3,8 @@ import axios from "axios";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
 import backendLink from "../utils/backendLink";
-
-function isValidPassword(password) {
-  return /^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(password);
-}
+import * as z from "zod";
+import resetPassword from "../types/resetPassword";
 
 const ResetPassword = () => {
   const [params] = useSearchParams();
@@ -20,14 +18,12 @@ const ResetPassword = () => {
     e.preventDefault();
     setMsg("");
     setMsgType("");
-    if (!password.trim()) {
-      setMsg("Please enter a new password.");
+    const result = z.safeParse(resetPassword, {
+      password: password,
+    });
+    if (result.error) {
       setMsgType("error");
-      return;
-    }
-    if (!isValidPassword(password)) {
-      setMsg("Password must be at least 8 characters, include a letter and a number.");
-      setMsgType("error");
+      setMsg(result.error.issues[0].message);
       return;
     }
     try {

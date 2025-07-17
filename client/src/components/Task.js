@@ -8,6 +8,8 @@ import "../styles/Task.css";
 import formatTimestamp from "../utils/formatTimestamp";
 import formatFullDate from "../utils/formatFullDate";
 import backendLink from "../utils/backendLink";
+import * as z from "zod";
+import taskForm from "../types/taskForm";
 
 const STATUS_OPTIONS = [
   { value: "todo", label: "To Do" },
@@ -18,7 +20,8 @@ const STATUS_OPTIONS = [
 const Task = ({ creation_date, content, status, completion_date, id, fetchTasks }) => {
   const [editing, setEditing] = useState(false);
   const [taskContent, setTaskContent] = useState(content);
-  const [formError, setFormError] = useState("");
+  const [msg, setMsg] = useState("");
+  const [msgType, setMsgType] = useState("");
   const [currentStatus, setCurrentStatus] = useState(status);
 
   const handleDragStart = (e) => {
@@ -34,13 +37,16 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
 
   const handleTaskCreate = async (e) => {
     e.preventDefault();
-    if (taskContent.length === 0) {
-      setFormError("Content can't be empty!");
-      return;
-    } else if (taskContent.length > 255) {
-      setFormError("The content is too long!");
+    setMsg("");
+    setMsgType("");
+
+    const result = z.safeParse(taskForm, { content: taskContent });
+    if (result.error) {
+      setMsgType("error");
+      setMsg(result.error.issues[0].message);
       return;
     }
+
     await axios.put(
       `${backendLink()}/board/${id}`,
       {
@@ -100,7 +106,17 @@ const Task = ({ creation_date, content, status, completion_date, id, fetchTasks 
               value={taskContent}
               onChange={(e) => setTaskContent(e.target.value)}
             />
-            {formError}
+            <div
+              className={
+                msgType === "success"
+                  ? "msg-success"
+                  : msgType === "error"
+                  ? "msg-error"
+                  : ""
+              }
+            >
+              {msg}
+            </div>
             <button className="task_content_form_button" type="submit">
               <CiSquareCheck size={22} />
             </button>

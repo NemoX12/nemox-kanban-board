@@ -3,20 +3,26 @@ import axios from "axios";
 import { CiSquareCheck } from "react-icons/ci";
 import { FaRegTimesCircle } from "react-icons/fa";
 import backendLink from "../utils/backendLink";
+import * as z from "zod";
+import taskForm from "../types/taskForm";
 
 const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
   const [taskContent, setTaskContent] = useState("");
-  const [formError, setFormError] = useState("");
+  const [msg, setMsg] = useState("");
+  const [msgType, setMsgType] = useState("");
 
   const handleTaskCreate = async (e) => {
     e.preventDefault();
-    if (taskContent.length === 0) {
-      setFormError("Content can't be empty!");
-      return;
-    } else if (taskContent.length > 255) {
-      setFormError("The content is too long!");
+    setMsg("");
+    setMsgType("");
+
+    const result = z.safeParse(taskForm, { content: taskContent });
+    if (result.error) {
+      setMsgType("error");
+      setMsg(result.error.issues[0].message);
       return;
     }
+
     await axios.post(
       `${backendLink()}/board`,
       {
@@ -44,7 +50,17 @@ const TaskForm = ({ fetchTasks, taskCreation, setTaskCreation }) => {
             autoComplete="false"
             onChange={(e) => setTaskContent(e.target.value)}
           />
-          {formError}
+          <div
+            className={
+              msgType === "success"
+                ? "msg-success"
+                : msgType === "error"
+                ? "msg-error"
+                : ""
+            }
+          >
+            {msg}
+          </div>
           <button className="task_content_form_button" type="submit">
             <CiSquareCheck size={22} />
           </button>

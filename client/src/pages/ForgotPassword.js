@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import SpamNotice from "../components/SpamNotice";
 import Loader from "../components/Loader";
 import backendLink from "../utils/backendLink";
+import * as z from "zod";
+import forgotPassword from "../types/forgotPassword";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -29,14 +31,12 @@ const ForgotPassword = () => {
     e.preventDefault();
     setMsg("");
     setMsgType("");
-    if (!email.trim()) {
-      setMsg("Please enter your email.");
+    const result = z.safeParse(forgotPassword, {
+      email: email,
+    });
+    if (result.error) {
       setMsgType("error");
-      return;
-    }
-    if (!isValidEmail(email)) {
-      setMsg("Please enter a valid email address.");
-      setMsgType("error");
+      setMsg(result.error.issues[0].message);
       return;
     }
     if (cooldown > 0) return;

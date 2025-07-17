@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
 import Loader from "../components/Loader";
 import backendLink from "../utils/backendLink";
+import * as z from "zod";
+import signIn from "../types/signIn";
 
 const SignIn = () => {
   const [username, setUsername] = useState("");
@@ -20,6 +22,13 @@ const SignIn = () => {
     e.preventDefault();
     setMsg("");
     setMsgType("");
+
+    const result = z.safeParse(signIn, { username: username, password: password });
+    if (result.error) {
+      setMsgType("error");
+      setMsg(result.error.issues[0].message);
+      return;
+    }
     setLoading(true);
     try {
       await axios.post(

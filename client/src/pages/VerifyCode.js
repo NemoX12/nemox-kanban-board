@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "../styles/AuthForm.css";
 import SpamNotice from "../components/SpamNotice";
 import backendLink from "../utils/backendLink";
+import * as z from "zod";
+import verifyCode from "../types/verifyCode";
 
 const VerifyCode = ({ email }) => {
   const [code, setCode] = useState("");
@@ -15,6 +17,14 @@ const VerifyCode = ({ email }) => {
     e.preventDefault();
     setMsg("");
     setMsgType("");
+    const result = z.safeParse(verifyCode, {
+      code: code,
+    });
+    if (result.error) {
+      setMsgType("error");
+      setMsg(result.error.issues[0].message);
+      return;
+    }
     try {
       await axios.post(`${backendLink()}/auth/verify-signup`, {
         username: email,
