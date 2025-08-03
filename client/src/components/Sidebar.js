@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import ProfileAvatar from "./ProfileAvatar";
 import "../styles/Sidebar.css";
 import { RiArrowLeftDoubleLine, RiArrowRightDoubleLine } from "react-icons/ri";
+import { IoMdExit } from "react-icons/io";
 
 const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
   const { logout, userData } = useContext(AuthContext);
@@ -27,7 +28,7 @@ const Sidebar = ({ isSidebarActive, setIsSidebarActive }) => {
       <div className="sidebar-buttons">
         {isSidebarActive && (
           <button className="sidebar-buttons-logout" onClick={handleLogout}>
-            Logout
+            <IoMdExit size={20} />
           </button>
         )}
         <button

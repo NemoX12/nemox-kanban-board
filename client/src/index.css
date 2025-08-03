@@ -11,3 +11,50 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+:root {
+  --body-color: #f0f3f8;
+  --board-color: #e8ebf3;
+  --board-column-highlighted: #ffffffb3;
+  --task-color: #fff;
+  --task-textarea-color: #fff;
+  --task-textarea-text-color: #000;
+  --sidebar-color: #525252;
+  --select-color: #f5f7fa;
+  --select-border-color: #bfc8e6;
+  --select-text-color: #222;
+  --authform-body-color: #fff;
+  --loader-bg: rgba(255, 255, 255, 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-color: #26262b;
+    --board-color: #313138;
+    --board-column-highlighted: #524f5eb3;
+    --task-color: #3a3a42;
+    --task-textarea-color: #38383e;
+    --task-textarea-text-color: #fff;
+    --sidebar-color: #1a1a1a;
+    --select-color: #666666;
+    --select-border-color: #787d8d;
+    --select-text-color: #d0d0d0;
+    --authform-body-color: #313138;
+    --loader-bg: rgba(0, 0, 0, 0.6);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  label {
+    color: #dadada;
+  }
+
+  svg {
+    color: #dadada;
+  }
+}

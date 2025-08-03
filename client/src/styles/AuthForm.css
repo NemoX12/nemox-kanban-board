@@ -4,14 +4,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f3f8;
+  background: var(--body-color);
 }
 
 .auth-form-container {
   width: 450px;
   margin: 60px auto;
   padding: 32px 28px 24px 28px;
-  background: #fff;
+  background: var(--authform-body-color);
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   display: flex;
@@ -21,7 +21,7 @@
 
 .auth-form-container h2 {
   margin-bottom: 24px;
-  color: #22223b;
+  color: var(--task-textarea-text-color);
   font-weight: 700;
   font-size: 2rem;
 }
@@ -30,10 +30,11 @@
   width: 100%;
   padding: 10px 12px;
   margin-bottom: 18px;
-  border: 1px solid #c9c9c9;
+  border: 1px solid var(--select-border-color);
+  color: var(--task-textarea-text-color);
   border-radius: 6px;
   font-size: 1rem;
-  background: #f8f8fa;
+  background: var(--task-textarea-color);
   transition: border 0.2s;
 }
 
@@ -63,7 +64,7 @@
 .auth-form-container p {
   margin-top: 12px;
   font-size: 0.97rem;
-  color: #444;
+  color: var(--task-textarea-text-color);
 }
 
 .auth-form-container button[type="button"] {
@@ -208,7 +209,7 @@
 .auth-form-container button[type="button"]:not(.gsi-material-button) {
   background: none;
   border: none;
-  color: #004ad1;
+  color: #acc5f1;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -219,7 +220,6 @@
 .link-button {
   background: none;
   border: none;
-  color: #004ad1;
   cursor: pointer;
   padding: 0;
   font-size: 1rem;

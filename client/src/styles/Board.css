@@ -19,7 +19,7 @@
 .board_container {
   width: 85%;
   height: 80%;
-  background-color: #e8ebf3;
+  background-color: var(--board-color);
   border-radius: 10px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -72,7 +72,7 @@
 }
 
 .board_container_column_body.highlighted {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--board-column-highlighted);
   outline: 1px dashed #008500;
   transition: background 0.2s;
 }

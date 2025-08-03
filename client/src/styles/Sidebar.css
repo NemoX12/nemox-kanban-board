@@ -1,7 +1,7 @@
 .sidebar {
   width: 200px;
   height: 100vh;
-  background: #22223b;
+  background: var(--sidebar-color);
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -71,18 +71,12 @@
 }
 
 .sidebar-buttons-logout {
-  background: #b11115;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 10px 18px;
-  font-size: 1rem;
+  background: none;
+  padding: 0;
   cursor: pointer;
-  transition: background 0.2s;
-}
-
-.sidebar-buttons-logout:hover {
-  background: #b71c1c;
+  transition: color 0.2s ease;
 }
 
 .sidebar-buttons-sidebar {
